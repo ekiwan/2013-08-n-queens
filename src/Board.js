@@ -88,7 +88,11 @@
     },
 
     hasAnyColConflicts: function(){
-      return false; // fixme
+      var conflict = false;
+      for (var i = 0; i < this.attributes.n; i++) {
+        conflict = conflict || this.hasColConflictAt(i);
+      }
+      return conflict;
     },
 
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow){
