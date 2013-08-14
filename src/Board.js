@@ -1,4 +1,11 @@
 (function(){
+    Array.prototype.sum = function() {
+    var sum = 0;
+    for (var i = 0; i < this.length; i++) {
+      sum += this[i];
+    }
+    return sum;
+  };
 
   window.Board = Backbone.Model.extend({
 
@@ -95,21 +102,58 @@
       return conflict;
     },
 
-    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow){
-      return false; // fixme
+    getMajorDiagonalAt: function(startingPoint) {
+      var diagonal = [];
+      while (this._isInBounds(startingPoint.row, startingPoint.col)) {
+        diagonal.push(this.attributes[startingPoint.row++][startingPoint.col++]);
+      }
+      return diagonal;
+    },
+
+    hasMajorDiagonalConflictAt: function(startingPoint){
+      return (this.getMajorDiagonalAt(startingPoint)).sum() > 1;
     },
 
     hasAnyMajorDiagonalConflicts: function(){
-      return false; // fixme
+      var indices = [];
+      var conflict = false;
+      for (var i = 0; i < this.attributes.n; i++) {
+        indices.push({row: 0, col: i});
+      }
+      for (var j = 1; j < this.attributes.n; j++) {
+        indices.push({row: j, col: 0});
+      }
+      for (var k = 0; k < indices.length; k++) {
+        conflict = conflict || this.hasMajorDiagonalConflictAt(indices[k]);
+      }
+      return conflict;
     },
 
-    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow){
-      return false; // fixme
+    getMinorDiagonalAt: function(startingPoint) {
+      var diagonal = [];
+      while (this._isInBounds(startingPoint.row, startingPoint.col)) {
+        diagonal.push(this.attributes[startingPoint.row++][startingPoint.col--]);
+      }
+      return diagonal;
+    },
+
+    hasMinorDiagonalConflictAt: function(startingPoint){
+      return (this.getMinorDiagonalAt(startingPoint)).sum() > 1;
     },
 
     hasAnyMinorDiagonalConflicts: function(){
-      return false; // fixme
-    }
+      var indices = [];
+      var conflict = false;
+      for (var i = 0; i < this.attributes.n; i++) {
+        indices.push({row: 0, col: i});
+      }
+      for (var j = 1; j < this.attributes.n; j++) {
+        indices.push({row: j, col: (this.attributes.n - 1) });
+      }
+      for (var k = 0; k < indices.length; k++) {
+        conflict = conflict || this.hasMinorDiagonalConflictAt(indices[k]);
+      }
+      return conflict;    }
 
   });
 
