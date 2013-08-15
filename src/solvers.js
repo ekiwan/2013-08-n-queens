@@ -61,7 +61,6 @@ window.findAllNRooksSolutions = function(n) {
 
 window.findNRooksSolution = function(n){
   var solutions = findAllNRooksSolutions(n);
-  //debugger;
   return n === 0 ? [] : solutions[0];
 };
 
@@ -98,16 +97,13 @@ window.countNQueensSolutions = function(n){
 
 window.countNQueensSolutionsBitwiseHelper = function(current, n, right, down, left) {
   var solutionsCount = 0;
-  right = right >> 1;
-  left = left << 1;
   var collisions = right | down | left;
   for (var i = 1; i < Math.pow(2, n); i *= 2) {
-    //debugger;
     if (!(collisions & i)) {
       if (current + 1 === n) {
         solutionsCount++;
       } else {
-        solutionsCount += countNQueensSolutionsBitwiseHelper(current + 1, n, right + i, down + i, left + i);
+        solutionsCount += countNQueensSolutionsBitwiseHelper(current + 1, n, (right + i) >> 1, down + i, (left + i) << 1);
       }
     }
   }
@@ -116,6 +112,25 @@ window.countNQueensSolutionsBitwiseHelper = function(current, n, right, down, le
 
 window.countNQueensSolutionsBitwise = function(n) {
   return countNQueensSolutionsBitwiseHelper(0, n, 0, 0, 0);
+};
+
+window.findNQueensSolutionsBitwiseHelper = function(current, n, right, down, left, board) {
+  var solutions = [];
+  var collisions = right | down | left;
+  for (var i = 1; i < Math.pow(2, n); i *= 2) {
+    if (!(collisions & i)) {
+      if (current + 1 === n) {
+        solutions.push(board+i);
+      } else {
+        solutions = solutions.concat(findNQueensSolutionsBitwiseHelper(current + 1, n, (right + i) >> 1, down + i, (left + i) << 1, (board + i) << n));
+      }
+    }
+  }
+  return solutions;
+};
+
+window.findNQueensSolutionsBitwise = function(n) {
+  return findNQueensSolutionsBitwiseHelper(0, n, 0, 0, 0, 0);
 };
 
 // This function uses a board visualizer lets you view an interactive version of any piece matrix.
