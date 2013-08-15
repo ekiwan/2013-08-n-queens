@@ -53,7 +53,7 @@ describe("solvers", function() {
 
     it('finds the number of valid solutions for n of 0-16', function(){
       _.range(1, 14).map(function(n){
-        var solutionCount = countNQueensSolutionsBitwise(n);
+        var solutionCount = countNQueensSolutionsBitwise(n, 0, 0, 0, 0);
         var expectedSolutionCount = [1, 1, 0, 0, 2, 10, 4, 40, 92, 352, 724, 2680, 14200, 73712, 365596, 2279184, 14772512][n];
         expect(solutionCount).to.be.equal(expectedSolutionCount);
       });
@@ -65,14 +65,14 @@ describe("solvers", function() {
   describe('findNQueensSolutions()', function(){
 
     it('finds the number of valid solutions for n of 8', function(){
-      _.range(1, 14).map(function(n){
+      _.range(13, 14).map(function(n){
         var before = new Date();
-        countNQueensSolutionsBitwise(n);
+        countNQueensSolutionsBitwise(n, 0, 0, 0, 0);
         var after = new Date();
         console.log("Count Time - " + n + ": " + (after - before) / 1000);
 
         before = new Date();
-        findNQueensSolutionsBitwise(n);
+        findNQueensSolutionsBitwise(n, 0, 0, 0, 0, 0);
         after = new Date();
         console.log("Find Time - " + n + ": " + (after - before) / 1000);
       });
