@@ -96,6 +96,28 @@ window.countNQueensSolutions = function(n){
 
 };
 
+window.countNQueensSolutionsBitwiseHelper = function(current, n, right, down, left) {
+  var solutionsCount = 0;
+  right = right >> 1;
+  left = left << 1;
+  var collisions = right | down | left;
+  for (var i = 1; i < Math.pow(2, n); i *= 2) {
+    //debugger;
+    if (!(collisions & i)) {
+      if (current + 1 === n) {
+        solutionsCount++;
+      } else {
+        solutionsCount += countNQueensSolutionsBitwiseHelper(current + 1, n, right + i, down + i, left + i);
+      }
+    }
+  }
+  return solutionsCount;
+};
+
+window.countNQueensSolutionsBitwise = function(n) {
+  return countNQueensSolutionsBitwiseHelper(0, n, 0, 0, 0);
+};
+
 // This function uses a board visualizer lets you view an interactive version of any piece matrix.
 window.displayBoard = function(matrix){
   $('body').html(
