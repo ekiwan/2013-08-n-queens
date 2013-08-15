@@ -95,43 +95,43 @@ window.countNQueensSolutions = function(n){
 
 };
 
-window.countNQueensSolutionsBitwiseHelper = function(current, n, right, down, left) {
+window.countNQueensSolutionsBitwise = function(n, current, right, down, left) {
   var solutionsCount = 0;
   var collisions = right | down | left;
-  for (var i = 1; i < Math.pow(2, n); i *= 2) {
+  for (var i = 1; i < (2 << (n - 1)); i *= 2) {
     if (!(collisions & i)) {
       if (current + 1 === n) {
         solutionsCount++;
       } else {
-        solutionsCount += countNQueensSolutionsBitwiseHelper(current + 1, n, (right + i) >> 1, down + i, (left + i) << 1);
+        solutionsCount += countNQueensSolutionsBitwise(n, current + 1, (right + i) >> 1, down + i, (left + i) << 1);
       }
     }
   }
   return solutionsCount;
 };
 
-window.countNQueensSolutionsBitwise = function(n) {
-  return countNQueensSolutionsBitwiseHelper(0, n, 0, 0, 0);
-};
+// window.countNQueensSolutionsBitwise = function(n) {
+//   return countNQueensSolutionsBitwiseHelper(n, 0, 0, 0, 0);
+// };
 
-window.findNQueensSolutionsBitwiseHelper = function(current, n, right, down, left, board) {
+window.findNQueensSolutionsBitwise = function(n, current, right, down, left, board) {
   var solutions = [];
   var collisions = right | down | left;
-  for (var i = 1; i < Math.pow(2, n); i *= 2) {
+  for (var i = 1; i < (2 << (n - 1)); i *= 2) {
     if (!(collisions & i)) {
       if (current + 1 === n) {
         solutions.push(board+i);
       } else {
-        solutions = solutions.concat(findNQueensSolutionsBitwiseHelper(current + 1, n, (right + i) >> 1, down + i, (left + i) << 1, (board + i) << n));
+        solutions = solutions.concat(findNQueensSolutionsBitwise(n, current + 1, (right + i) >> 1, down + i, (left + i) << 1, (board + i) << n));
       }
     }
   }
   return solutions;
 };
 
-window.findNQueensSolutionsBitwise = function(n) {
-  return findNQueensSolutionsBitwiseHelper(0, n, 0, 0, 0, 0);
-};
+// window.findNQueensSolutionsBitwise = function(n) {
+//   return findNQueensSolutionsBitwiseHelper(n, 0, 0, 0, 0, 0);
+// };
 
 // This function uses a board visualizer lets you view an interactive version of any piece matrix.
 window.displayBoard = function(matrix){
