@@ -110,6 +110,8 @@ window.countNQueensSolutionsBitwise = function(n, current, right, down, left) {
   return solutionsCount;
 };
 
+t=function(n,c,r,d,l){var s=0,z=r|d|l;for(var i=1;i<1<<n;i*=2)if(!(z&i)){if(c+1==n)s++;else{s+=t(n,c+1,r+i>>1,d+i,l+i<<1);}}return s}
+
 // window.countNQueensSolutionsBitwise = function(n) {
 //   return countNQueensSolutionsBitwiseHelper(n, 0, 0, 0, 0);
 // };
