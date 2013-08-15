@@ -52,7 +52,7 @@ window.findAllNRooksSolutions = function(n) {
   for (var i = 0; i < allPossibleBoards.length; i++) {
     var board = new Board(allPossibleBoards[i]);
     if(!board.hasAnyRooksConflicts()) {
-      solutions.push(board);
+      solutions.push(allPossibleBoards[i]);
     }
   }
 
@@ -61,12 +61,13 @@ window.findAllNRooksSolutions = function(n) {
 
 window.findNRooksSolution = function(n){
   var solutions = findAllNRooksSolutions(n);
-  return solutions[0];
+  //debugger;
+  return n === 0 ? [] : solutions[0];
 };
 
 window.countNRooksSolutions = function(n){
   var solutions = findAllNRooksSolutions(n);
-  return solutions.length;
+  return n === 0 ? 1 : solutions.length;
 };
 
 window.findAllNQueensSolutions = function(n) {
@@ -81,24 +82,21 @@ window.findAllNQueensSolutions = function(n) {
   }
 
   return solutions;
-
 };
 
 window.findNQueensSolution = function(n){
   var solutions = findAllNQueensSolutions(n);
-  return solutions[0];
+  return solutions[0] === undefined ? [] : solutions[0];
 
 };
 
 window.countNQueensSolutions = function(n){
   var solutions = findAllNQueensSolutions(n);
-  return solutions.length;
+  return n === 0 ? 1: solutions.length;
 
 };
 
-
 // This function uses a board visualizer lets you view an interactive version of any piece matrix.
-
 window.displayBoard = function(matrix){
   $('body').html(
     new BoardView({
