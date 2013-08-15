@@ -1,33 +1,99 @@
 // Write code here that will find the solution count for a board of any size.
 // hint: you'll need to do a full-search of all possible arrangements of pieces!
 // (There are also optimizations that will allow you to skip a lot of the dead search space)
+window.makeEmptyMatrix = function(n) {
+  var matrix = [];
+  for (var i = 0; i < n; i++) {
+    matrix[i] = [];
+    for (var j = 0; j < n; j++) {
+      matrix[i][j] = 0;
+    }
+  }
+  return matrix;
+};
+
+window.placePieceOnBoard = function(matrix, row, col) {
+  var copy = [];
+  for (var i = 0; i < matrix.length; i++) {
+    copy[i] = [];
+    for (var j = 0; j < matrix.length; j++) {
+      if(i === row && j === col) {
+        copy[i][j] = 1;
+      }
+      else {
+        copy[i][j] = matrix[i][j];
+      }
+    }
+  }
+  return copy;
+};
+
+window.findAllPossibleBoards = function(row, n, matrix) {
+  matrix = matrix || makeEmptyMatrix(n);
+  var boards = [];
+  for (var i = 0; i < n; i++) {
+    var nextBoard = placePieceOnBoard(matrix, row, i);
+    if (row === (n - 1)) { //If we are on the last row
+      //debugger;
+      boards.push(nextBoard);//then push the matrix onto the boards array
+    }
+    else {
+      //keep going further
+      boards = boards.concat(findAllPossibleBoards(row + 1, n, nextBoard));
+    }
+  }
+  return boards;
+};
+
+window.findAllNRooksSolutions = function(n) {
+  var solutions = [];
+
+  var allPossibleBoards = findAllPossibleBoards(0, n);
+  for (var i = 0; i < allPossibleBoards.length; i++) {
+    var board = new Board(allPossibleBoards[i]);
+    if(!board.hasAnyRooksConflicts()) {
+      solutions.push(board);
+    }
+  }
+
+  return solutions;
+};
 
 window.findNRooksSolution = function(n){
-  var solution = undefined; //fixme
-
-  console.log('Single solution for ' + n + ' rooks:', solution);
-  return solution;
+  var solutions = findAllNRooksSolutions(n);
+  return solutions[0];
 };
 
 window.countNRooksSolutions = function(n){
-  var solutionCount = undefined; //fixme
+  var solutions = findAllNRooksSolutions(n);
+  return solutions.length;
+};
 
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
-  return solutionCount;
+window.findAllNQueensSolutions = function(n) {
+  var solutions = [];
+
+  var allPossibleBoards = findAllPossibleBoards(0, n);
+  for (var i = 0; i < allPossibleBoards.length; i++) {
+    var board = new Board(allPossibleBoards[i]);
+    if(!board.hasAnyQueensConflicts()) {
+      solutions.push(board);
+    }
+  }
+
+  return solutions;
+
 };
 
 window.findNQueensSolution = function(n){
-  var solution = undefined; //fixme
+  var solutions = findAllNQueensSolutions(n);
+  return solutions[0];
 
-  console.log('Single solution for ' + n + ' queens:', solution);
-  return solution;
 };
 
 window.countNQueensSolutions = function(n){
-  var solutionCount = undefined; //fixme
+  var solutions = findAllNQueensSolutions(n);
+  return solutions.length;
 
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-  return solutionCount;
 };
 
 
